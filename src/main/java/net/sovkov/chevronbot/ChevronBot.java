@@ -71,6 +71,7 @@ public class ChevronBot extends TelegramLongPollingBot {
         baos.flush();
         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
         SendDocument doc = new SendDocument().setDocument("chevron.png", bais);
+        doc.setChatId(chatId);
         execute(doc);
         logger.info("Sent message \"{}\" to {}", msg, chatId);
       } catch (Exception e) {
