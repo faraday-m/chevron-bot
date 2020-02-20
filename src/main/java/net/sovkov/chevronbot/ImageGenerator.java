@@ -20,6 +20,7 @@ public class ImageGenerator {
   private static final int LEFT_MARGIN = (int)(FONT_SIZE/10);
   private static final Font FONT = Font.decode("Arial-BOLD-" + String.valueOf((int)FONT_SIZE));
   private static final HashMap<RenderingHints.Key, Object> RenderingProperties = new HashMap<>();
+  private static final FontRenderContext frc = new FontRenderContext(null, true, true);
   
   static{
     RenderingProperties.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -68,12 +69,15 @@ public class ImageGenerator {
     return img;
   }
   
+  private static double getFontLength(String str) {
+    return FONT.getStringBounds(str,frc).getWidth();
+  }
+  
   private static Rectangle2D makeRectangle(String text, long lineCount) {
     //Calculate size of buffered image.
     
-    FontRenderContext frc = new FontRenderContext(null, true, true);
     
-    String maxLenStr = Stream.of(text.split("\\n+")).max(Comparator.comparing(String::length)).get();
+    String maxLenStr = Stream.of(text.split("\\n+")).max(Comparator.comparing(ImageGenerator::getFontLength)).get();
     Rectangle2D r2d = FONT.getStringBounds(text, frc);
     r2d.setFrame(0,0,FONT.getStringBounds(maxLenStr,frc).getWidth() + LEFT_MARGIN * 2 + THICKNESS * 2, ((FONT.getStringBounds(text,frc).getHeight()) * lineCount) + TOP_MARGIN * 2 + THICKNESS * 2) ;
     
@@ -103,7 +107,6 @@ public class ImageGenerator {
     int y = TOP_MARGIN + THICKNESS - (int)tl.getLeading() - (int)tl.getDescent();
   
     for (String line : text.split("\n")) {
-      FontRenderContext frc = new FontRenderContext(null, true, true);
       Rectangle2D tempRect = FONT.getStringBounds(line, frc);
       int tempWidth = (int)(r2d.getWidth()/2 - tempRect.getWidth()/2 + THICKNESS);
       g2d.drawString(line, tempWidth, y += g2d.getFontMetrics().getHeight());
