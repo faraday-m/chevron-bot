@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class ChevronBot extends TelegramLongPollingBot {
   private static final Logger logger = LoggerFactory.getLogger(ChevronBot.class);
   
-  private static final String TOKEN = System.getProperty("bot.token");
+  private static final String TOKEN = System.getenv().get("bot.token");
   private static final String USERNAME = "lprchevronbot";
   
   
