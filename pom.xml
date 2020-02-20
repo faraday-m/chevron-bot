@@ -40,7 +40,7 @@
             <version>2.0.16</version>
             <configuration>
                 <processTypes>
-                    <web>java -jar target/chevronbot-1.0.jar</web>
+                    <worker>java -jar target/chevronbot-1.0.jar</worker>
                 </processTypes>
             </configuration>
         </plugin>
