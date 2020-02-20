@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.telegram.telegrambots.ApiContextInitializer;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -16,7 +17,7 @@ public class Application {
     ApiContextInitializer.init();
     SpringApplication app = new SpringApplication(Application.class);
     app.setDefaultProperties(Collections
-        .singletonMap("server.port", System.getenv("PORT")));
-    SpringApplication.run(Application.class, args);
+        .singletonMap("server.port", Optional.ofNullable(System.getenv("PORT")).orElse("5000")));
+    app.run(Application.class, args);
   }
 }
