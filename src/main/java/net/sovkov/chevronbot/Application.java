@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.telegram.telegrambots.ApiContextInitializer;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -19,5 +22,14 @@ public class Application {
     app.setDefaultProperties(Collections
         .singletonMap("server.port", Optional.ofNullable(System.getenv("PORT")).orElse("5000")));
     app.run(Application.class, args);
+  
+  
+    try (ServerSocket serverSocket = new ServerSocket(Integer.valueOf(System.getenv("PORT")))) {
+      while (true) {
+        Socket clientSocket = serverSocket.accept();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
